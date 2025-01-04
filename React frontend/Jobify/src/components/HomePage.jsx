@@ -1,11 +1,55 @@
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const handleNavigation = (path) => {
-    navigate(path);
+  useEffect(() => {
+    window.gapi.load("auth2", () => {
+      const auth2 = window.gapi.auth2.init({
+        client_id: "730888137190-ike7e86qjg8agldgpdu99la9svds5ru3.apps.googleusercontent.com", // Replace with your actual Google Client ID
+      });
+
+      // Check if the user is already signed in
+      const currentUser = auth2.currentUser.get();
+      setIsLoggedIn(currentUser.isSignedIn());
+      setUser(currentUser.getBasicProfile());
+
+      // Listen for sign-in state changes
+      auth2.isSignedIn.listen((signedIn) => {
+        setIsLoggedIn(signedIn);
+        if (signedIn) {
+          setUser(auth2.currentUser.get().getBasicProfile());
+        } else {
+          setUser(null);
+        }
+      });
+    });
+  }, []);
+
+  const handleLogin = () => {
+    window.gapi.auth2.getAuthInstance().signIn().then((googleUser) => {
+      setIsLoggedIn(true);
+      setUser(googleUser.getBasicProfile());
+      localStorage.setItem("user", JSON.stringify(googleUser.getBasicProfile()));
+      navigate("/login");
+    });
+  };
+
+  const handleLogout = () => {
+    window.gapi.auth2.getAuthInstance().signOut().then(() => {
+      setIsLoggedIn(false);
+      setUser(null);
+      localStorage.removeItem("user");
+      navigate("/login");
+    });
+  };
+
+  const handleProfileClick = () => {
+    navigate("/profile");
   };
 
   return (
@@ -13,7 +57,7 @@ const HomePage = () => {
       {/* Navbar Section */}
       <nav className="navbar">
         <div className="navbar-left">
-          <h1 className="navbar-title">Jobify</h1>
+          <span className="navbar-title">Jobify</span>
           <div className="search-bar">
             <input
               type="text"
@@ -24,27 +68,31 @@ const HomePage = () => {
               <i className="fa fa-search"></i>
             </button>
           </div>
-
         </div>
         <div className="navbar-right">
-          <button
-            className="navbar-button"
-            onClick={() => handleNavigation("/jobs")}
-          >
+          <button className="navbar-button" onClick={() => navigate("/jobs")}>
             Jobs
           </button>
           <button
             className="navbar-button"
-            onClick={() => handleNavigation("/recruit")}
+            onClick={() => navigate("/recruit")}
           >
             Recruit
           </button>
-          <button
-            className="navbar-button"
-            onClick={() => handleNavigation("/login")}
-          >
-            Login
-          </button>
+          {isLoggedIn ? (
+            <>
+              <span className="profile-name" onClick={handleProfileClick}>
+                {user ? user.getName() : ""}
+              </span>
+              <button className="logout-button" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <button className="login-button" onClick={handleLogin}>
+              Login
+            </button>
+          )}
         </div>
       </nav>
       {/* Hero Section */}
