@@ -73,7 +73,6 @@
 .features-section {
   padding: 40px 20px;
   background-color: #f8f9fa;
-  /* Light grey background */
   text-align: center;
 }
 
@@ -85,7 +84,6 @@
 
 .features-box {
   background-color: white;
-  /* White box inside light grey background */
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -104,7 +102,6 @@
 .feature h3 {
   font-size: 1.5em;
   color: #0056b3;
-  /* A shade of blue */
   margin-bottom: 10px;
 }
 
@@ -113,7 +110,10 @@
   color: #555;
 }
 
-/* Navbar Styles */
+.feature > * {
+  margin: 8px 0; 
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -145,6 +145,7 @@
   border-radius: 20px;
   overflow: hidden;
   height: 35px;
+  padding-left: 8px;
 }
 
 .search-input {
@@ -189,7 +190,6 @@
   color: white;
 }
 
-/* Responsive Navbar */
 @media (max-width: 768px) {
   .search-bar {
     width: 100%;
@@ -205,18 +205,15 @@
   }
 }
 
-/* Testimonials Section */
 .testimonials-section {
   padding: 40px 20px;
   background-color: #f8f9fa;
-  /* Light grey background */
   text-align: center;
 }
 
 .testimonials-title {
   font-size: 2em;
   color: #0056b3;
-  /* A shade of blue */
   margin-bottom: 20px;
 }
 
@@ -251,13 +248,11 @@
   font-weight: bold;
 }
 
-/* Search Bar Styling */
 .search-bar {
   display: flex;
   align-items: center;
   background-color: white;
   border: 2px solid transparent;
-  /* Default border */
   border-radius: 20px;
   overflow: hidden;
   height: 40px;
@@ -267,9 +262,7 @@
 
 .search-bar:hover {
   border-color: #0056b3;
-  /* Highlight on hover */
   box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
-  /* Subtle glow */
 }
 
 .search-input {
@@ -279,19 +272,15 @@
   outline: none;
   font-size: 1em;
   color: black;
-  /* Input text color */
   caret-color: #0056b3;
-  /* Blinking cursor color */
 }
 
 .search-input::placeholder {
   color: #aaa;
-  /* Placeholder text color */
 }
 
 .search-input:focus {
   caret-color: #0056b3;
-  /* Change cursor color on focus */
 }
 
 .search-icon {
@@ -299,7 +288,6 @@
   border: none;
   padding: 0 10px;
   color: black;
-  /* Black search icon */
   cursor: pointer;
   display: flex;
   align-items: center;
