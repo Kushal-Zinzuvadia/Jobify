@@ -25,9 +25,43 @@ function Recruit() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log('Form submitted:', formData);
+    
+        try {
+            const response = await fetch('http://localhost:8000/api/jobs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+    
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Job posted successfully:', result);
+    
+                // reset the form
+                setFormData({
+                    jobTitle: '',
+                    company: '',
+                    location: '',
+                    salary: '',
+                    jobType: 'full-time',
+                    experience: 'entry',
+                    description: '',
+                    requirements: '',
+                });
+    
+                alert('Job posted successfully!');
+            } else {
+                console.error('Failed to post job:', response.statusText);
+                alert('Failed to post job. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error while posting job:', error);
+            alert('An error occurred. Please try again.');
+        }
     };
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
