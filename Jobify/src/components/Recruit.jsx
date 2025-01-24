@@ -27,7 +27,7 @@ function Recruit() {
         e.preventDefault();
     
         try {
-            const response = await fetch('http://localhost:8080/api/jobs', {
+            const response = await fetch('http://localhost:8000/api/jobs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ function Recruit() {
                 const result = await response.json();
                 console.log('Job posted successfully:', result);
     
-                // Optionally reset the form
+                // reset the form
                 setFormData({
                     jobTitle: '',
                     company: '',
