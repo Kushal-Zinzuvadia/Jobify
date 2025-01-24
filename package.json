@@ -1,5 +1,9 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "lucide-react": "^0.469.0"
+=======
+    "@fortawesome/fontawesome-free": "^6.7.2"
+>>>>>>> 717e73d1e3804716c4a8de1565754d1e0322202a
   }
 }

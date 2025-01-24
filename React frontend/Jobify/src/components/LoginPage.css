@@ -1,0 +1,101 @@
+/* Apply background image to the login-body */
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('src/assets/bg-login.jpg');  /* Set your image path */
+    background-size: cover; /* Make the image cover the full screen */
+    background-position: top center;  /* Position the image to show the top */
+    background-repeat: no-repeat;
+  }
+  
+  /* Login container styling */
+  .login-container {
+    background: rgba(0, 0, 0, 0.7); /* Dark background with transparency */
+    padding: 40px 60px;
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    transform: translateY(-50px);
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
+  }
+  
+  .login-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    color: white;
+  }
+  
+  .login-container p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    opacity: 0.8;
+    color: white;
+  }
+  
+  .login-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .google-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+  
+  .google-login:hover {
+    background-color: #a9aeb6;
+  }
+  
+  .google-login img {
+    width: 20px;
+    margin-right: 10px;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 480px) {
+    .login-container {
+      padding: 30px 40px;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    p {
+      font-size: 1rem;
+    }
+  
+    .google-login {
+      font-size: 1rem;
+      padding: 10px 25px;
+    }
+  }
+  
