@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Briefcase, DollarSign, MapPin, Search, Filter } from 'lucide-react';
 import Navbar from './Navbar';
+import JobList from './JobList';
 import { useAuth0 } from "@auth0/auth0-react";
 
 function Jobs() {
@@ -16,24 +17,41 @@ function Jobs() {
     const { getAccessTokenSilently } = useAuth0();
 
     const handleSearch = useCallback(async () => {
+        try {
+            const token = await getAccessTokenSilently();
+            // console.log("Token:", token);
+            // console.log("JWT Token Length:", token.length);
 
-        const token = await getAccessTokenSilently();
-        const query = new URLSearchParams({
-            searchTerm,
-            location,
-            jobType,
-            experience,
-            salaryRange,
-            page: currentPage,
-        }).toString();
+            const query = new URLSearchParams({
+                searchTerm,
+                location,
+                jobType,
+                experience,
+                salaryRange,
+                page: currentPage,
+            }).toString();
 
-        const response = await fetch(`http://localhost:8080/api/jobs?${query}`,
-            {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-        const data = await response.json();
-        setJobListings(data.jobs);
-        setTotalJobs(data.total);
+            const response = await fetch(`http://localhost:8080/api/jobs?${query}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const text = await response.text(); 
+            const data = text ? JSON.parse(text) : {}; 
+
+            setJobListings(data.jobs || []);
+            setTotalJobs(data.total || 0);
+        }
+        catch (error) {
+            console.error("Error fetching jobs:", error);
+        }        
     }, [getAccessTokenSilently, searchTerm, location, jobType, experience, salaryRange, currentPage]);
 
     useEffect(() => {
@@ -142,28 +160,12 @@ function Jobs() {
                         </div>
 
                         {/* Job Listings */}
-                        <div className="space-y-6">
-                            {jobListings.map((job, index) => (
-                                <div key={index} className="border-b pb-6">
-                                    <h3 className="text-xl font-semibold text-gray-900">{job.role}</h3>
-                                    <p className="text-gray-600">{job.company}</p>
-                                    <p className="text-gray-500">{job.summary}</p>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Pagination */}
-                        <div className="flex justify-center mt-8 space-x-4">
-                            {[...Array(totalPages)].map((_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => handlePageChange(index + 1)}
-                                    className={`px-4 py-2 border rounded-md ${currentPage === index + 1 ? 'bg-indigo-600 text-white' : 'bg-white text-indigo-600'}`}
-                                >
-                                    {index + 1}
-                                </button>
-                            ))}
-                        </div>
+                        <JobList
+                            jobListings={jobListings}
+                            totalPages={totalPages}
+                            currentPage={currentPage}
+                            handlePageChange={handlePageChange}
+                        />
 
                         {/* Job Role Recommendations */}
                         <div className="mt-12">

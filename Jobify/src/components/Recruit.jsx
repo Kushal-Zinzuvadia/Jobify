@@ -30,7 +30,7 @@ function Recruit() {
         const token = await getAccessTokenSilently();
     
         try {
-            const response = await fetch('http://localhost:8000/api/jobs', {
+            const response = await fetch('http://localhost:8080/api/jobs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
