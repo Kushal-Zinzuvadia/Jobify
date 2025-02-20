@@ -10,8 +10,10 @@ import {
     CheckCircle2
 } from 'lucide-react';
 import Navbar from './Navbar';
+import { useAuth0 } from "@auth0/auth0-react";
 
 function Recruit() {
+    const { getAccessTokenSilently } = useAuth0();
     const [formData, setFormData] = useState({
         jobTitle: '',
         company: '',
@@ -25,12 +27,14 @@ function Recruit() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = await getAccessTokenSilently();
     
         try {
             const response = await fetch('http://localhost:8000/api/jobs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify(formData),
             });

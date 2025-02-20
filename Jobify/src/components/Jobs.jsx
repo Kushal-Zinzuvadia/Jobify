@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Briefcase, DollarSign, MapPin, Search, Filter } from 'lucide-react';
 import Navbar from './Navbar';
+import { useAuth0 } from "@auth0/auth0-react";
 
 function Jobs() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -12,26 +13,32 @@ function Jobs() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalJobs, setTotalJobs] = useState(0);
     const jobsPerPage = 10;
+    const { getAccessTokenSilently } = useAuth0();
 
     const handleSearch = useCallback(async () => {
-      const query = new URLSearchParams({
-          searchTerm,
-          location,
-          jobType,
-          experience,
-          salaryRange,
-          page: currentPage,
-      }).toString();
 
-      const response = await fetch(`/api/jobs?${query}`);
-      const data = await response.json();
-      setJobListings(data.jobs);
-      setTotalJobs(data.total);
-  }, [searchTerm, location, jobType, experience, salaryRange, currentPage]);
+        const token = await getAccessTokenSilently();
+        const query = new URLSearchParams({
+            searchTerm,
+            location,
+            jobType,
+            experience,
+            salaryRange,
+            page: currentPage,
+        }).toString();
 
-  useEffect(() => {
-      handleSearch();
-  }, [handleSearch]);
+        const response = await fetch(`http://localhost:8080/api/jobs?${query}`,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+        const data = await response.json();
+        setJobListings(data.jobs);
+        setTotalJobs(data.total);
+    }, [getAccessTokenSilently, searchTerm, location, jobType, experience, salaryRange, currentPage]);
+
+    useEffect(() => {
+        handleSearch();
+    }, [handleSearch]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

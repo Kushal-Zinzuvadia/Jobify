@@ -1,19 +1,17 @@
-import React from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
 
-  // Handlers for third-party authentication
-  const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8000/oauth2/authorization/google"; // Update with your backend endpoint
-  };
-
-  React.useEffect(() => {
-    if (window.location.pathname === "/login/success") {
-      navigate("/home"); // Redirect to homepage after login
+  // Redirect to home after successful login
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/home");
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-100 via-indigo-300 to-indigo-500">
@@ -25,16 +23,12 @@ const LoginPage = () => {
           Sign in to continue
         </p>
 
+        {/* Auth0 Login */}
         <button
-          className="w-full flex items-center justify-center px-4 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg shadow-sm hover:bg-gray-50 transition duration-150"
-          onClick={handleGoogleLogin}
+          className="w-full flex items-center justify-center px-4 py-3 bg-indigo-600 text-white rounded-lg shadow-sm hover:bg-indigo-700 transition duration-150"
+          onClick={() => loginWithRedirect()}
         >
-          <img
-            src="src/assets/google-logo.png"
-            alt="Google Logo"
-            className="w-6 h-6 mr-2"
-          />
-          Sign in with Google
+          Log in with Auth0
         </button>
       </div>
     </div>
