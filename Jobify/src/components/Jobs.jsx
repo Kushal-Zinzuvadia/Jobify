@@ -18,7 +18,12 @@ function Jobs() {
 
     const handleSearch = useCallback(async () => {
         try {
-            const token = await getAccessTokenSilently();
+            const token = await getAccessTokenSilently({
+                authorizationParams: {
+                    audience: "https://dev-js62l7dyu6g81sdx.us.auth0.com/api/v2/",
+                    scope: "read:jobs"
+                }
+            });
             // console.log("Token:", token);
             // console.log("JWT Token Length:", token.length);
 
