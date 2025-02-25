@@ -12,10 +12,12 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
     "@reduxjs/toolkit": "^2.5.0",
+    "axios": "^1.7.9",
     "express": "^4.21.2",
     "mongoose": "^8.9.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.0"
   },

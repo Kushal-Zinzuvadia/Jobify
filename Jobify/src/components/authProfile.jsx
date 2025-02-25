@@ -43,9 +43,9 @@ function AuthProfile() {
               }
           }
       };
-  
-      fetchUserRole();
-  }, [isAuthenticated, user, getAccessTokenSilently]);
+      
+      if(user.email) fetchUserRole();
+  }, [isAuthenticated, user, getAccessTokenSilently, user.email]);
 
   const handleRoleSelection = async (selectedRole) => {
     try {

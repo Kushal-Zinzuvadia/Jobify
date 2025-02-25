@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { myAxios } from "./utils/user-service";
 import HomePage from "./components/HomePage";
 import Recruit from "./components/Recruit";
 import Welcome from "./components/Welcome";
@@ -23,11 +26,11 @@ ProtectedRoute.propTypes = {
 const App = () => {
   const { isLoading } = useAuth0();
 
-  
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <Router>
+    <Router> 
+      <AuthHandler /> 
       <Routes>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />
@@ -39,6 +42,22 @@ const App = () => {
       </Routes>
     </Router>
   );
+};
+
+// ✅ Create a separate component for authentication logic
+const AuthHandler = () => {
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      navigate("/login");
+    }
+    myAxios.defaults.headers.common["authorization"] = token;
+    console.log(token);
+  }, [navigate]);
+
+  return null; // This component doesn’t render anything
 };
 
 export default App;
