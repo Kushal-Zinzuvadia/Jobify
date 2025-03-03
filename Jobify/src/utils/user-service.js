@@ -21,10 +21,10 @@ myAxios.interceptors.response.use(
             console.log(message);
             
             console.log("Inceptor:",message)
-            localStorage.removeItem("authToken")
-            delete myAxios.defaults.headers.common["Authorization"];
-            console.log("Token removed");
-            console.log(localStorage.getItem("authToken"));
+            // localStorage.removeItem("authToken")
+            // delete myAxios.defaults.headers.common["Authorization"];
+            // console.log("Token removed");
+            // console.log(localStorage.getItem("authToken"));
             
         }
         return Promise.reject(error);

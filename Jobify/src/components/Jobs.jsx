@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { Briefcase, DollarSign, MapPin, Search, Filter } from 'lucide-react';
 import Navbar from './Navbar';
 import JobList from './JobList';
-import { useAuth0 } from "@auth0/auth0-react";
 
 function Jobs() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -14,16 +13,15 @@ function Jobs() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalJobs, setTotalJobs] = useState(0);
     const jobsPerPage = 10;
-    const { getAccessTokenSilently } = useAuth0();
 
     const handleSearch = useCallback(async () => {
         try {
-            const token = await getAccessTokenSilently({
-                authorizationParams: {
-                    audience: "https://dev-js62l7dyu6g81sdx.us.auth0.com/api/v2/",
-                    scope: "read:jobs"
-                }
-            });
+            // const token = await getAccessTokenSilently({
+            //     authorizationParams: {
+            //         audience: "https://dev-js62l7dyu6g81sdx.us.auth0.com/api/v2/",
+            //         scope: "read:jobs"
+            //     }
+            // });
             // console.log("Token:", token);
             // console.log("JWT Token Length:", token.length);
 
@@ -39,7 +37,7 @@ function Jobs() {
             const response = await fetch(`http://localhost:8080/api/jobs?${query}`,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        // Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json"
                     }
                 });
@@ -57,7 +55,7 @@ function Jobs() {
         catch (error) {
             console.error("Error fetching jobs:", error);
         }        
-    }, [getAccessTokenSilently, searchTerm, location, jobType, experience, salaryRange, currentPage]);
+    }, [searchTerm, location, jobType, experience, salaryRange, currentPage]);
 
     useEffect(() => {
         handleSearch();

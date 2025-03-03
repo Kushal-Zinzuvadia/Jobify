@@ -10,10 +10,10 @@ import {
     CheckCircle2
 } from 'lucide-react';
 import Navbar from './Navbar';
-import { useAuth0 } from "@auth0/auth0-react";
+// import { useAuth0 } from "@auth0/auth0-react";
 
 function Recruit() {
-    const { getAccessTokenSilently } = useAuth0();
+    // const { getAccessTokenSilently } = useAuth0();
     const [formData, setFormData] = useState({
         jobTitle: '',
         company: '',
@@ -27,23 +27,36 @@ function Recruit() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const token = await getAccessTokenSilently();
+    
+        // Retrieve user details from localStorage
+        const user = JSON.parse(localStorage.getItem("user"));
+    
+        if (!user || user.data.roleName !== "EMPLOYER") {
+            alert("Only employers can post jobs.");
+            return;
+        }
+    
+        // Include employer_id in job data
+        const jobData = {
+            ...formData,
+            employer_id: user.data.id  // Ensure employer_id is included
+        };
     
         try {
             const response = await fetch('http://localhost:8080/api/jobs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
+                    // Authorization: `Bearer ${user?.token}`,  
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(jobData),
             });
     
             if (response.ok) {
                 const result = await response.json();
                 console.log('Job posted successfully:', result);
     
-                // reset the form
+                // Reset the form
                 setFormData({
                     jobTitle: '',
                     company: '',
@@ -64,8 +77,7 @@ function Recruit() {
             console.error('Error while posting job:', error);
             alert('An error occurred. Please try again.');
         }
-    };
-    
+    }; 
 
     const handleChange = (e) => {
         const { name, value } = e.target;

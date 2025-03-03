@@ -15,10 +15,13 @@ const AuthLogin = () => {
 
     if (!isLoading && !isAuthenticated) {
       loginWithRedirect();
-    } else if (isAuthenticated) {
+      console.log("Redirecting to login...");
+      
+     } 
+    else if (isAuthenticated) {
       navigate("/home");
     }
-  }, [isAuthenticated, isLoading, loginWithRedirect, navigate, error]);
+  }, [isAuthenticated, isLoading, error, navigate,loginWithRedirect]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
