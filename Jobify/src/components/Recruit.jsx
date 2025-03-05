@@ -39,7 +39,7 @@ function Recruit() {
         // Include employer_id in job data
         const jobData = {
             ...formData,
-            employer_id: user.data.id  // Ensure employer_id is included
+            employerId: user.data.id  // Ensure employer_id is included
         };
     
         try {

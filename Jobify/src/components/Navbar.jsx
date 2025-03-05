@@ -45,7 +45,7 @@ function Navbar() {
                         {/* Show "Post a Job" only if user is EMPLOYER */}
                         {
                             user ? (
-                                user?.roleName === "EMPLOYER" && (
+                                user.data?.roleName === "EMPLOYER" && (
                                     <button
                                         className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
                                         onClick={() => navigate('/recruit')}

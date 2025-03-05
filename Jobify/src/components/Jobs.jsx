@@ -1,93 +1,76 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Briefcase, DollarSign, MapPin, Search, Filter } from 'lucide-react';
-import Navbar from './Navbar';
-import JobList from './JobList';
+import { useState, useEffect } from "react";
+import { Briefcase, DollarSign, MapPin, Search, Filter } from "lucide-react";
+import Navbar from "./Navbar";
+import JobList from "./JobList";
 
 function Jobs() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [location, setLocation] = useState('');
-    const [jobType, setJobType] = useState('full-time');
-    const [experience, setExperience] = useState('entry');
-    const [salaryRange, setSalaryRange] = useState('');
-    const [jobListings, setJobListings] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalJobs, setTotalJobs] = useState(0);
-    const jobsPerPage = 10;
+    const [searchTerm, setSearchTerm] = useState("");
+    const [location, setLocation] = useState("");
+    const [jobType, setJobType] = useState("all");
+    const [experience, setExperience] = useState("all");
+    const [salaryRange, setSalaryRange] = useState("");
+    const [jobListings, setJobListings] = useState([]); // Stores all jobs from API
+    const [filteredJobs, setFilteredJobs] = useState([]); // Stores filtered jobs
 
-    const handleSearch = useCallback(async () => {
-        try {
-            // const token = await getAccessTokenSilently({
-            //     authorizationParams: {
-            //         audience: "https://dev-js62l7dyu6g81sdx.us.auth0.com/api/v2/",
-            //         scope: "read:jobs"
-            //     }
-            // });
-            // console.log("Token:", token);
-            // console.log("JWT Token Length:", token.length);
+    // ✅ Fetch jobs once when component mounts
+    useEffect(() => {
+        const fetchJobs = async () => {
+            console.log("Fetching jobs from API..."); // Debugging
 
-            const query = new URLSearchParams({
-                searchTerm,
-                location,
-                jobType,
-                experience,
-                salaryRange,
-                page: currentPage,
-            }).toString();
-
-            const response = await fetch(`http://localhost:8080/api/jobs?${query}`,
-                {
-                    headers: {
-                        // Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
+            try {
+                const response = await fetch("http://localhost:8080/api/jobs", {
+                    headers: { "Content-Type": "application/json" },
                 });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("Jobs received:", data.jobs); // Debugging
+
+                setJobListings(data.jobs || []);
+                setFilteredJobs(data.jobs || []); // Initially, show all jobs
+            } catch (error) {
+                console.error("Error fetching jobs:", error);
             }
+        };
 
-            const text = await response.text(); 
-            const data = text ? JSON.parse(text) : {}; 
+        fetchJobs();
+    }, []); // ✅ Runs only once on mount
 
-            setJobListings(data.jobs || []);
-            setTotalJobs(data.total || 0);
-        }
-        catch (error) {
-            console.error("Error fetching jobs:", error);
-        }        
-    }, [searchTerm, location, jobType, experience, salaryRange, currentPage]);
-
+    // ✅ Filter jobs dynamically without API call
     useEffect(() => {
-        handleSearch();
-    }, [handleSearch]);
+        const filtered = jobListings.filter((job) =>
+            (searchTerm === "" || job.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())) &&
+            (location === "" || job.location.toLowerCase().includes(location.toLowerCase())) &&
+            (salaryRange === "" || job.salary.toString().includes(salaryRange)) &&
+            (jobType === "all" || job.jobType.toLowerCase() === jobType.toLowerCase()) &&
+            (experience === "all" || job.experience.toLowerCase() === experience.toLowerCase())
+        );
 
+        setFilteredJobs(filtered);
+    }, [searchTerm, location, jobType, experience, salaryRange, jobListings]); // ✅ Runs when any filter changes
+
+    // ✅ Handle Input Changes
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === 'searchTerm') setSearchTerm(value);
-        else if (name === 'location') setLocation(value);
-        else if (name === 'jobType') setJobType(value);
-        else if (name === 'experience') setExperience(value);
-        else if (name === 'salaryRange') setSalaryRange(value);
+        if (name === "searchTerm") setSearchTerm(value);
+        else if (name === "location") setLocation(value);
+        else if (name === "jobType") setJobType(value);
+        else if (name === "experience") setExperience(value);
+        else if (name === "salaryRange") setSalaryRange(value);
     };
-
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
-
-    const totalPages = Math.ceil(totalJobs / jobsPerPage);
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Navbar */}
             <Navbar />
-
-            {/* Main Content */}
             <main className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
                 <div className="bg-white rounded-lg shadow-xl p-8">
                     <div className="max-w-3xl mx-auto">
                         <h2 className="text-3xl font-bold text-gray-900 mb-8">Find Your Dream Job</h2>
 
-                        {/* Search Bar */}
+                        {/* ✅ Search Bar */}
                         <div className="flex mb-8">
                             <input
                                 type="text"
@@ -97,16 +80,13 @@ function Jobs() {
                                 placeholder="Search for jobs..."
                                 className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:ring-indigo-500"
                             />
-                            <button
-                                onClick={handleSearch}
-                                className="px-4 py-2 bg-indigo-600 text-white rounded-r-md flex items-center"
-                            >
+                            <button className="px-4 py-2 bg-indigo-600 text-white rounded-r-md flex items-center">
                                 <Search className="h-5 w-5" />
                                 <span className="ml-2">Search</span>
                             </button>
                         </div>
 
-                        {/* Filters */}
+                        {/* ✅ Filters */}
                         <div className="flex space-x-6 mb-8">
                             <div className="flex items-center space-x-2">
                                 <MapPin className="h-5 w-5 text-gray-400" />
@@ -140,6 +120,7 @@ function Jobs() {
                                     onChange={handleChange}
                                     className="px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"
                                 >
+                                    <option value="all">All</option>
                                     <option value="full-time">Full-time</option>
                                     <option value="part-time">Part-time</option>
                                     <option value="contract">Contract</option>
@@ -155,6 +136,7 @@ function Jobs() {
                                     onChange={handleChange}
                                     className="px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"
                                 >
+                                    <option value="all">All</option>
                                     <option value="entry">Entry Level</option>
                                     <option value="mid">Mid Level</option>
                                     <option value="senior">Senior Level</option>
@@ -162,13 +144,8 @@ function Jobs() {
                             </div>
                         </div>
 
-                        {/* Job Listings */}
-                        <JobList
-                            jobListings={jobListings}
-                            totalPages={totalPages}
-                            currentPage={currentPage}
-                            handlePageChange={handlePageChange}
-                        />
+                        {/* ✅ Display Filtered Jobs */}
+                        <JobList jobListings={filteredJobs} />
 
                         {/* Job Role Recommendations */}
                         <div className="mt-12">
