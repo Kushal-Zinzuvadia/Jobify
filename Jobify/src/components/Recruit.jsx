@@ -41,7 +41,7 @@ function Recruit() {
             ...formData,
             employerId: user.data.id  // Ensure employer_id is included
         };
-    
+        
         try {
             const response = await fetch('http://localhost:8080/api/jobs', {
                 method: 'POST',

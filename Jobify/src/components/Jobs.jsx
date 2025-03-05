@@ -64,112 +64,128 @@ function Jobs() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <Navbar />
-            <main className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-                <div className="bg-white rounded-lg shadow-xl p-8">
-                    <div className="max-w-3xl mx-auto">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-8">Find Your Dream Job</h2>
-
-                        {/* ✅ Search Bar */}
-                        <div className="flex mb-8">
-                            <input
-                                type="text"
-                                name="searchTerm"
-                                value={searchTerm}
-                                onChange={handleChange}
-                                placeholder="Search for jobs..."
-                                className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:ring-indigo-500"
-                            />
-                            <button className="px-4 py-2 bg-indigo-600 text-white rounded-r-md flex items-center">
-                                <Search className="h-5 w-5" />
-                                <span className="ml-2">Search</span>
-                            </button>
-                        </div>
-
-                        {/* ✅ Filters */}
-                        <div className="flex space-x-6 mb-8">
-                            <div className="flex items-center space-x-2">
-                                <MapPin className="h-5 w-5 text-gray-400" />
-                                <input
-                                    type="text"
-                                    name="location"
-                                    value={location}
-                                    onChange={handleChange}
-                                    placeholder="Location"
-                                    className="px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"
-                                />
-                            </div>
-
-                            <div className="flex items-center space-x-2">
-                                <DollarSign className="h-5 w-5 text-gray-400" />
-                                <input
-                                    type="text"
-                                    name="salaryRange"
-                                    value={salaryRange}
-                                    onChange={handleChange}
-                                    placeholder="Salary Range"
-                                    className="px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"
-                                />
-                            </div>
-
-                            <div className="flex items-center space-x-2">
-                                <Filter className="h-5 w-5 text-gray-400" />
-                                <select
-                                    name="jobType"
-                                    value={jobType}
-                                    onChange={handleChange}
-                                    className="px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"
-                                >
-                                    <option value="all">All</option>
-                                    <option value="full-time">Full-time</option>
-                                    <option value="part-time">Part-time</option>
-                                    <option value="contract">Contract</option>
-                                    <option value="internship">Internship</option>
-                                </select>
-                            </div>
-
-                            <div className="flex items-center space-x-2">
-                                <Briefcase className="h-5 w-5 text-gray-400" />
-                                <select
-                                    name="experience"
-                                    value={experience}
-                                    onChange={handleChange}
-                                    className="px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500"
-                                >
-                                    <option value="all">All</option>
-                                    <option value="entry">Entry Level</option>
-                                    <option value="mid">Mid Level</option>
-                                    <option value="senior">Senior Level</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        {/* ✅ Display Filtered Jobs */}
-                        <JobList jobListings={filteredJobs} />
-
-                        {/* Job Role Recommendations */}
-                        <div className="mt-12">
-                            <h3 className="text-2xl font-semibold text-gray-900 mb-4">Recommended Job Roles</h3>
-                            <ul className="space-y-4">
-                                <li className="border-b pb-4">
-                                    <h4 className="text-xl font-semibold">Software Engineer</h4>
-                                    <p className="text-gray-600">Build and maintain software applications.</p>
-                                </li>
-                                <li className="border-b pb-4">
-                                    <h4 className="text-xl font-semibold">Data Scientist</h4>
-                                    <p className="text-gray-600">Analyze and interpret complex data to drive business decisions.</p>
-                                </li>
-                                <li className="border-b pb-4">
-                                    <h4 className="text-xl font-semibold">Product Manager</h4>
-                                    <p className="text-gray-600">Manage the development and lifecycle of a product.</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+          <Navbar />
+          <main className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+              <div className="max-w-3xl mx-auto">
+                <h2 className="text-4xl font-bold text-gray-900 mb-6 text-center">
+                  Find Your Dream Job
+                </h2>
+    
+                {/* ✅ Search Bar */}
+                <div className="flex shadow-md rounded-lg overflow-hidden mb-8">
+                  <input
+                    type="text"
+                    name="searchTerm"
+                    value={searchTerm}
+                    onChange={handleChange}
+                    placeholder="Enter Job Role..."
+                    className="w-full px-4 py-3 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                  />
+                  <button className="px-6 py-3 bg-indigo-600 text-white font-semibold flex items-center hover:bg-indigo-700 transition">
+                    <Search className="h-5 w-5" />
+                    <span className="ml-2">Search</span>
+                  </button>
                 </div>
-            </main>
+    
+                {/* ✅ Filters */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                  <div className="flex items-center space-x-2 border border-gray-300 p-3 rounded-lg">
+                    <MapPin className="h-5 w-5 text-gray-400" />
+                    <input
+                      type="text"
+                      name="location"
+                      value={location}
+                      onChange={handleChange}
+                      placeholder="Location"
+                      className="w-full outline-none bg-transparent"
+                    />
+                  </div>
+    
+                  <div className="flex items-center space-x-2 border border-gray-300 p-3 rounded-lg">
+                    <DollarSign className="h-5 w-5 text-gray-400" />
+                    <input
+                      type="text"
+                      name="salaryRange"
+                      value={salaryRange}
+                      onChange={handleChange}
+                      placeholder="Salary Range"
+                      className="w-full outline-none bg-transparent"
+                    />
+                  </div>
+    
+                  <div className="flex items-center space-x-2 border border-gray-300 p-3 rounded-lg">
+                    <Filter className="h-5 w-5 text-gray-400" />
+                    <select
+                      name="jobType"
+                      value={jobType}
+                      onChange={handleChange}
+                      className="w-full outline-none bg-transparent"
+                    >
+                      <option value="all">All</option>
+                      <option value="full-time">Full-time</option>
+                      <option value="part-time">Part-time</option>
+                      <option value="contract">Contract</option>
+                      <option value="internship">Internship</option>
+                    </select>
+                  </div>
+    
+                  <div className="flex items-center space-x-2 border border-gray-300 p-3 rounded-lg">
+                    <Briefcase className="h-5 w-5 text-gray-400" />
+                    <select
+                      name="experience"
+                      value={experience}
+                      onChange={handleChange}
+                      className="w-full outline-none bg-transparent"
+                    >
+                      <option value="all">All</option>
+                      <option value="entry">Entry Level</option>
+                      <option value="mid">Mid Level</option>
+                      <option value="senior">Senior Level</option>
+                    </select>
+                  </div>
+                </div>
+    
+                {/* ✅ Display Filtered Jobs */}
+                <JobList jobListings={filteredJobs} />
+    
+                {/* ✅ Job Role Recommendations */}
+                <div className="mt-12">
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+                    Recommended Job Roles
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {[
+                      {
+                        title: "Software Engineer",
+                        description: "Build and maintain software applications.",
+                      },
+                      {
+                        title: "Data Scientist",
+                        description:
+                          "Analyze and interpret complex data to drive business decisions.",
+                      },
+                      {
+                        title: "Product Manager",
+                        description:
+                          "Manage the development and lifecycle of a product.",
+                      },
+                    ].map((role, index) => (
+                      <div
+                        key={index}
+                        className="p-5 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition bg-white"
+                      >
+                        <h4 className="text-lg font-semibold">{role.title}</h4>
+                        <p className="text-gray-600 text-sm mt-1">{role.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
         </div>
-    );
-}
+      );
+};
 
 export default Jobs;

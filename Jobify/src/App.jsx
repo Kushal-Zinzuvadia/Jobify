@@ -5,6 +5,7 @@ import Welcome from "./components/Welcome";
 import Jobs from "./components/Jobs";
 import LoginPage from "./components/LoginPage";
 import Register from "./components/Register";
+import Profile from "./components/Profile";
 
 // Protected Route Component
 // const ProtectedRoute = ({ element }) => {
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/recruit" element={<Recruit />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/jobs" element={<Jobs />} />
+        <Route path="/profile" element={<Profile />} />
         {/* <Route path="/profile" element={<Route element={<AuthProfile />} />} /> */}
       </Routes>
     </Router>
