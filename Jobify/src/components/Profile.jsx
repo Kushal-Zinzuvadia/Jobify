@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { fetchPostedJobs } from "../api/api"; 
 
 const Profile = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -9,9 +9,9 @@ const Profile = () => {
     const [postedJobs, setPostedJobs] = useState([]);
 
     useEffect(() => {
-        const fetchPostedJobs = async () => {
+        const loadPostedJobs = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/jobs/posted/${user.id}`);
+                const response = await fetchPostedJobs(user.id);
                 const jobs = response.data;
     
                 if (Array.isArray(jobs)) {
@@ -26,7 +26,7 @@ const Profile = () => {
         };
     
         if (user.roleName === "EMPLOYER") {
-            fetchPostedJobs();
+            loadPostedJobs();
         }
     }, [user.id, user.roleName]); 
     

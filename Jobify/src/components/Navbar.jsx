@@ -16,7 +16,7 @@ function Navbar() {
     const handleLogout = () => {
         localStorage.removeItem("user");
         navigate("/home");
-        window.location.reload(); // Refresh to update UI
+        window.location.reload(); 
     };
 
     return (

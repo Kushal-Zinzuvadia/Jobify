@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Navbar from './Navbar';
 import { User, Mail, Briefcase } from 'lucide-react';
+// eslint-disable-next-line no-unused-vars
+import {fetchUserByEmail, setUserRole, fetchMyApplications, fetchJobApplicants} from "../api/api"; 
 
 function AuthProfile() {
   const { getAccessTokenSilently } = useAuth0();
@@ -18,13 +20,7 @@ function AuthProfile() {
                   const token = await getAccessTokenSilently();
                   console.log("Fetched Token:", token);  // Debugging
   
-                  const response = await fetch(`http://localhost:8080/api/user/${user.email}`, {
-                      method: 'GET',
-                      headers: {
-                          'Content-Type': 'application/json',
-                          Authorization: `Bearer ${token}`,
-                      },
-                  });
+                  const response = await fetchUserByEmail(user.email, token);
   
                   if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -50,14 +46,7 @@ function AuthProfile() {
   const handleRoleSelection = async (selectedRole) => {
     try {
         const token = await getAccessTokenSilently();
-        const response = await fetch(`http://localhost:8080/api/set-role`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ email: user.email, role: selectedRole }),
-        });
+        const response = await setUserRole(user.email, selectedRole, token);
 
         if (response.ok) {
             setRole(selectedRole);
@@ -75,13 +64,7 @@ useEffect(() => {
       if (role === "job_seeker") {
           try {
               const token = await getAccessTokenSilently();
-              const response = await fetch(`http://localhost:8080/api/my-applications/${user.email}`, {
-                  method: 'GET',
-                  headers: {
-                      'Content-Type': 'application/json',
-                      Authorization: `Bearer ${token}`,
-                  },
-              });
+              const response = await fetchMyApplications(user.email, token);
 
               if (!response.ok) {
                   throw new Error(`HTTP error! Status: ${response.status}`);
@@ -103,13 +86,7 @@ useEffect(() => {
       if (role === "employer") {
           try {
               const token = await getAccessTokenSilently();
-              const response = await fetch(`http://localhost:8080/api/job-applicants/${user.email}`, {
-                  method: 'GET',
-                  headers: {
-                      'Content-Type': 'application/json',
-                      Authorization: `Bearer ${token}`,
-                  },
-              });
+              const response = await fetchJobApplicants(user.email, token);
 
               if (!response.ok) {
                   throw new Error(`HTTP error! Status: ${response.status}`);

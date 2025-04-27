@@ -1,0 +1,164 @@
+import axios from 'axios';
+
+const BASE_URL = 'https://jobify-backend-production.up.railway.app/api';       
+
+// Axios instance
+const apiClient = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
+});
+
+// --- API Functions ---
+
+// Fetch user by email
+export const fetchUserByEmail = (email, token) => {
+  return fetch(`${BASE_URL}/user/${email}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+// Set user role
+export const setUserRole = (email, role, token) => {
+  return fetch(`${BASE_URL}/set-role`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ email, role }),
+  });
+};
+
+// Get applications made by the user
+export const fetchMyApplications = (email, token) => {
+  return fetch(`${BASE_URL}/my-applications/${email}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+// Get applicants for jobs posted by the user
+export const fetchJobApplicants = (email, token) => {
+  return fetch(`${BASE_URL}/job-applicants/${email}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+// Apply to a job (using axios)
+export const applyToJob = (userId, jobId) => {
+  return apiClient.post(`/user/${userId}/apply/${jobId}`);
+};
+
+// Fetch all jobs (simple fetch)
+export const fetchAllJobs = () => {
+  return fetch(`${BASE_URL}/jobs`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+// Login user (using axios)
+export const loginUser = (formData) => {
+  return apiClient.post('/login', formData);
+};
+
+// Fetch jobs posted by a user (using axios)
+export const fetchPostedJobs = (userId) => {
+  return apiClient.get(`/jobs/posted/${userId}`);
+};
+
+// Post a new job (using fetch)
+export const postNewJob = (jobData) => {
+  return fetch(`${BASE_URL}/jobs`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      // Authorization header can be added here if needed
+    },
+    body: JSON.stringify(jobData),
+  });
+};
+
+// Register new user (using axios)
+export const registerUser = (formData) => {
+  return apiClient.post('/register', formData);
+};
+
+// --- Export the client too if needed ---
+export default apiClient;
+
+
+// import { myAxios } from "../utils/user-service";
+
+// export const loginApi = async(values)=>{
+//     try {
+//         console.log("loginApi:",values);
+//         const res = await myAxios.post('/login',values);
+//         const token = res.headers['authorization'];
+//         if(res.data.statusCode==200 && token){
+//             localStorage.setItem("authToken",token)
+//             localStorage.setItem("email",values.email)
+//             localStorage.setItem("userRole" , res.data.data.role)
+//             console.log(res.data.data.role,"res.role");
+            
+//             console.log(res.data);
+//             console.log(token);
+//             myAxios.defaults.headers.common['authorization'] = token;
+//         }
+//         console.log(res);
+//         return res.data;
+//     } catch (error) {
+//         return error.response.data;
+//     }
+// }
+
+// export const signUpApi = async(values)=>{
+//     try {
+        
+//         const res = await myAxios.post('/register',values);
+//         console.log(res);
+//         return res.data;
+//     } catch (error) {
+//         return error.response.data;
+//     }
+// }
+// export const verifyEmailApi = async(token)=>{
+//         try {
+//             console.log("in verify email api : ", typeof token);
+//             const res = await myAxios.post(`/verify`,{otp:token});
+//             if(res.data.statusCode==200 && token){
+//                 localStorage.setItem("authToken",token)
+//                 myAxios.defaults.headers.common['authorization'] = token;
+//             }
+//             console.log(res);
+//             return res.data;
+//         } catch (error) {
+//             console.log(error);
+//             return error.response.data
+//         }
+// }
+
+// export const resendEmail = async()=>{
+//     try {
+//         const res = await myAxios.post('/resend-email',{email:JSON.parse(localStorage.getItem("userEmail"))})
+//         return res.data;
+//     } catch (error) {
+//         return error.response.data;
+//     }
+// }
+

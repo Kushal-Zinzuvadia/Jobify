@@ -10,6 +10,7 @@ import {
     CheckCircle2
 } from 'lucide-react';
 import Navbar from './Navbar';
+import { postNewJob } from '../api/api';
 // import { useAuth0 } from "@auth0/auth0-react";
 
 function Recruit() {
@@ -43,14 +44,7 @@ function Recruit() {
         };
         
         try {
-            const response = await fetch('http://localhost:8080/api/jobs', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Authorization: `Bearer ${user?.token}`,  
-                },
-                body: JSON.stringify(jobData),
-            });
+            const response = await postNewJob(jobData);
     
             if (response.ok) {
                 const result = await response.json();

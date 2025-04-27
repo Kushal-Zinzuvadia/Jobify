@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../api/api";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -17,15 +17,10 @@ const Register = () => {
     };
 
     const handleSubmit = async (e) => {
-        console.log("Form Data before sending:", formData); // Debugging log
+        console.log("Form Data before sending:", formData); 
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:8080/api/register", formData, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                }
-            });
+            const response = await registerUser(formData);
             console.log("Registration successful:", response.data);
             navigate("/login");
         } catch (err) {
