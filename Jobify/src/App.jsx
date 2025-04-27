@@ -25,7 +25,7 @@ const App = () => {
   //if (isLoading) return <div>Loading...</div>;
 
   return (
-    <Router> 
+    <Router basename="/jobify"> 
       <Routes>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />
