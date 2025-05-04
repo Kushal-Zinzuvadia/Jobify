@@ -95,11 +95,11 @@ export const fetchApplicants = (jobId) => {
 };
 
 export const deleteJob = async (jobId) => {
-  return await axios.delete(`/api/jobs/${jobId}`);
+  return await axios.delete(`/jobs/${jobId}`);
 };
 
 export const updateJob = async (jobId, jobData) => {
-  return await axios.put(`/api/jobs/${jobId}`, jobData);
+  return await axios.put(`/jobs/${jobId}`, jobData);
 };
 
 export default apiClient;
