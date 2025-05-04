@@ -1,6 +1,7 @@
 import Navbar from "./Navbar";
 import { useState, useEffect } from "react";
-import { fetchPostedJobs, fetchApplicants } from "../api/api";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { fetchPostedJobs, fetchApplicants, deleteJob, updateJob } from "../api/api";
 
 const Profile = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -10,6 +11,20 @@ const Profile = () => {
     const [showModal, setShowModal] = useState(false);
     const [applicants, setApplicants] = useState([]);
     const [selectedJobTitle, setSelectedJobTitle] = useState("");
+
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editJobData, setEditJobData] = useState({
+        id: "",
+        jobTitle: "",
+        roleName: "",
+        location: "",
+        salary: "",
+        description: "",
+        requirements: "",
+        experience: "",
+        jobType: "",
+    });
+
 
     useEffect(() => {
         const loadPostedJobs = async () => {
@@ -35,17 +50,65 @@ const Profile = () => {
 
     const handleApplicantsClick = async (jobId, jobTitle) => {
         try {
-          const res = await fetchApplicants(jobId);
-          if (!res.ok) throw new Error("Failed to fetch applicants");
-      
-          const data = await res.json();
-          setApplicants(data);
-          setSelectedJobTitle(jobTitle);
-          setShowModal(true);
+            const res = await fetchApplicants(jobId);
+            if (!res.ok) throw new Error("Failed to fetch applicants");
+
+            const data = await res.json();
+            setApplicants(data);
+            setSelectedJobTitle(jobTitle);
+            setShowModal(true);
         } catch (error) {
-          console.error("Failed to fetch applicants:", error);
+            console.error("Failed to fetch applicants:", error);
         }
-      };      
+    };
+
+    const handleDeleteJob = async (jobId) => {
+        if (!window.confirm("Are you sure you want to delete this job?")) return;
+
+        try {
+            await deleteJob(jobId);
+            setPostedJobs((prev) => prev.filter((job) => job.id !== jobId));
+        } catch (error) {
+            console.error("Error deleting job:", error);
+            alert("Failed to delete the job.");
+        }
+    };
+
+    const handleUpdateJob = (job) => {
+        setEditJobData({
+            id: job.id,
+            jobTitle: job.jobTitle,
+            roleName: job.roleName,
+            location: job.location || "",
+            salary: job.salary || "",
+            description: job.description || "",
+            requirements: job.requirements || "",
+            experience: job.experience || "entry",
+            jobType: job.jobType || "Full time",
+        });
+        setShowEditModal(true);
+    };
+
+    const handleEditChange = (e) => {
+        const { name, value } = e.target;
+        setEditJobData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await updateJob(editJobData.id, editJobData);
+            alert("Job updated successfully!");
+            setShowEditModal(false);
+
+            const res = await fetchPostedJobs(user.id);
+            setPostedJobs(res.data);
+        } catch (err) {
+            console.error("Failed to update job:", err);
+            alert("Failed to update job.");
+        }
+    };
+
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -114,6 +177,7 @@ const Profile = () => {
                                                 <th className="border p-3 text-left">Job Title</th>
                                                 <th className="border p-3 text-left">Location</th>
                                                 <th className="border p-3 text-left">No. of Applicants</th>
+                                                <th className="border p-3 text-left">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -126,6 +190,14 @@ const Profile = () => {
                                                         onClick={() => handleApplicantsClick(job.id, job.jobTitle)}
                                                     >
                                                         {job.users ? job.users.length : 0} Applicants
+                                                    </td>
+                                                    <td className="border p-3 space-x-4">
+                                                        <button onClick={() => handleUpdateJob(job)} title="Edit">
+                                                            <FiEdit className="inline cursor-pointer text-blue-600" onClick={() => handleUpdateJob(job)} />
+                                                        </button>
+                                                        <button onClick={() => handleDeleteJob(job.id)} title="Delete">
+                                                            <FiTrash2 className="inline cursor-pointer text-red-600 ml-4" onClick={() => handleDeleteJob(job.id)} />
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -144,16 +216,37 @@ const Profile = () => {
 
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg max-w-md w-full">
+                    <div className="bg-white p-6 rounded-lg max-w-2xl w-full">
                         <h4 className="text-xl font-semibold mb-4">Applicants for {selectedJobTitle}</h4>
                         {applicants.length > 0 ? (
-                            <ul className="list-disc pl-5 space-y-2">
-                                {applicants.map((applicant, idx) => (
-                                    <li key={idx}>
-                                        {applicant.name} – {applicant.email}
-                                    </li>
-                                ))}
-                            </ul>
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full border-collapse border border-gray-300 rounded">
+                                    <thead>
+                                        <tr className="bg-gray-100">
+                                            <th className="border p-2 text-left">Name</th>
+                                            <th className="border p-2 text-left">Email</th>
+                                            {/* <th className="border p-2 text-left">Resume</th> */}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {applicants.map((applicant, idx) => (
+                                            <tr key={idx} className="hover:bg-gray-50">
+                                                <td className="border p-2">{applicant.name}</td>
+                                                <td className="border p-2">{applicant.email}</td>
+                                                {/* <td className="border p-2">
+                                                    {applicant.resumeUrl ? (
+                                                        <a href={applicant.resumeUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+                                                            View Resume
+                                                        </a>
+                                                    ) : (
+                                                        "N/A"
+                                                    )}
+                                                </td> */}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         ) : (
                             <p>No applicants found.</p>
                         )}
@@ -163,6 +256,112 @@ const Profile = () => {
                         >
                             Close
                         </button>
+                    </div>
+                </div>
+            )}
+
+            {showEditModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg w-full max-w-2xl">
+                        <h2 className="text-2xl font-semibold mb-4">Edit Job - {editJobData.jobTitle}</h2>
+                        <form onSubmit={handleEditSubmit} className="space-y-4">
+                            <div>
+                                <label className="block text-gray-700 font-medium">Role</label>
+                                <input
+                                    type="text"
+                                    value={editJobData.roleName}
+                                    disabled
+                                    className="w-full border px-4 py-2 rounded bg-gray-100"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-700 font-medium">Location</label>
+                                <input
+                                    type="text"
+                                    name="location"
+                                    value={editJobData.location}
+                                    onChange={handleEditChange}
+                                    className="w-full border px-4 py-2 rounded"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-700 font-medium">Salary</label>
+                                <input
+                                    type="text"
+                                    name="salary"
+                                    value={editJobData.salary}
+                                    onChange={handleEditChange}
+                                    className="w-full border px-4 py-2 rounded"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-700 font-medium">Description</label>
+                                <textarea
+                                    name="description"
+                                    value={editJobData.description}
+                                    onChange={handleEditChange}
+                                    className="w-full border px-4 py-2 rounded"
+                                    rows={3}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-700 font-medium">Requirements</label>
+                                <textarea
+                                    name="requirements"
+                                    value={editJobData.requirements}
+                                    onChange={handleEditChange}
+                                    className="w-full border px-4 py-2 rounded"
+                                    rows={2}
+                                />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-gray-700 font-medium">Experience</label>
+                                    <select
+                                        name="experience"
+                                        value={editJobData.experience}
+                                        onChange={handleEditChange}
+                                        className="w-full border px-4 py-2 rounded"
+                                    >
+                                        <option value="entry">Entry</option>
+                                        <option value="mid">Mid</option>
+                                        <option value="senior">Senior</option>
+                                        <option value="executive">Executive</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-gray-700 font-medium">Job Type</label>
+                                    <select
+                                        name="jobType"
+                                        value={editJobData.jobType}
+                                        onChange={handleEditChange}
+                                        className="w-full border px-4 py-2 rounded"
+                                    >
+                                        <option value="Full time">Full time</option>
+                                        <option value="Part time">Part time</option>
+                                        <option value="Contract">Contract</option>
+                                        <option value="Internship">Internship</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="flex justify-end space-x-4">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowEditModal(false)}
+                                    className="bg-gray-500 text-white px-4 py-2 rounded"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="bg-blue-600 text-white px-4 py-2 rounded"
+                                >
+                                    Update
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}
