@@ -16,7 +16,6 @@ function Welcome() {
 
             <Navbar></Navbar>
 
-            {/* Hero Section */}
             <header className="bg-indigo-600 text-white py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h1 className="text-4xl font-bold mb-4">
@@ -38,7 +37,6 @@ function Welcome() {
                 </div>
             </header>
 
-            {/* Key Features Section */}
             <section className="py-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-3xl font-bold text-gray-900 mb-8">Why Choose Jobify?</h2>
@@ -68,7 +66,6 @@ function Welcome() {
                 </div>
             </section>
 
-            {/* Testimonials Section */}
             <section className="bg-gray-100 py-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-3xl font-bold text-gray-900 mb-8">What People Are Saying</h2>
@@ -98,7 +95,6 @@ function Welcome() {
                 </div>
             </section>
 
-            {/* Footer */}
             <footer className="bg-gray-900 text-white py-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row justify-between items-center">

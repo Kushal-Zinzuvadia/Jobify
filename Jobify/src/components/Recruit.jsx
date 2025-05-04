@@ -11,10 +11,8 @@ import {
 } from 'lucide-react';
 import Navbar from './Navbar';
 import { postNewJob } from '../api/api';
-// import { useAuth0 } from "@auth0/auth0-react";
 
 function Recruit() {
-    // const { getAccessTokenSilently } = useAuth0();
     const [formData, setFormData] = useState({
         jobTitle: '',
         company: '',
@@ -29,7 +27,6 @@ function Recruit() {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        // Retrieve user details from localStorage
         const user = JSON.parse(localStorage.getItem("user"));
     
         if (!user || user.data.roleName !== "EMPLOYER") {
@@ -37,10 +34,9 @@ function Recruit() {
             return;
         }
     
-        // Include employer_id in job data
         const jobData = {
             ...formData,
-            employerId: user.data.id  // Ensure employer_id is included
+            employerId: user.data.id 
         };
         
         try {
@@ -50,7 +46,6 @@ function Recruit() {
                 const result = await response.json();
                 console.log('Job posted successfully:', result);
     
-                // Reset the form
                 setFormData({
                     jobTitle: '',
                     company: '',
@@ -83,16 +78,13 @@ function Recruit() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Header */}
             <Navbar></Navbar>
 
-            {/* Main Content */}
             <main className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
                 <div className="bg-white rounded-lg shadow-xl p-8">
                     <div className="max-w-3xl mx-auto">
                         <h2 className="text-3xl font-bold text-gray-900 mb-8">Post a New Job</h2>
 
-                        {/* Benefits Section */}
                         <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-3">
                             <div className="flex items-start">
                                 <div className="flex-shrink-0">
@@ -123,7 +115,6 @@ function Recruit() {
                             </div>
                         </div>
 
-                        {/* Job Posting Form */}
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div>

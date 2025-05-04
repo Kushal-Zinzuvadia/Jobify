@@ -7,24 +7,7 @@ import LoginPage from "./components/LoginPage";
 import Register from "./components/Register";
 import Profile from "./components/Profile";
 
-// Protected Route Component
-// const ProtectedRoute = ({ element }) => {
-//   const { isAuthenticated, isLoading } = useAuth0();
-
-//   if (isLoading) return <div>Loading...</div>;
-//   return isAuthenticated ? element : <Navigate to="/login" replace />;
-// };
-
-// ProtectedRoute.propTypes = {
-//   element: PropTypes.element.isRequired, 
-// };
-
 const App = () => {
-  //const { isLoading } = useAuth0();
-
-  //if (isLoading) return <div>Loading...</div>;
-
-// basename="/jobify"
   return (
     <Router> 
       <Routes>
@@ -36,13 +19,44 @@ const App = () => {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/profile" element={<Profile />} />
-        {/* <Route path="/profile" element={<Route element={<AuthProfile />} />} /> */}
       </Routes>
     </Router>
   );
 };
 
-// ✅ Create a separate component for authentication logic
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+// Protected Route Component
+  // const ProtectedRoute = ({ element }) => {
+  //   const { isAuthenticated, isLoading } = useAuth0();
+  
+  //   if (isLoading) return <div>Loading...</div>;
+  //   return isAuthenticated ? element : <Navigate to="/login" replace />;
+  // };
+  
+  // ProtectedRoute.propTypes = {
+  //   element: PropTypes.element.isRequired, 
+  // };
+
+
+  //const { isLoading } = useAuth0();
+    
+      //if (isLoading) return <div>Loading...</div>;
+    
+    // basename="/jobify"
+
+
+    // Create a separate component for authentication logic
 // const AuthHandler = () => {
 //   const navigate = useNavigate();
   
@@ -57,5 +71,3 @@ const App = () => {
 
 //   return null; // This component doesn’t render anything
 // };
-
-export default App;

@@ -1,4 +1,3 @@
-/* General Body Styling */
 .login-body {
   display: flex;
   justify-content: center;
@@ -8,14 +7,13 @@
       rgba(0, 0, 0, 0.5),
       rgba(0, 0, 0, 0.7)
     ),
-    url("src/assets/bg-login.jpg"); /* Replace with your background image path */
+    url("src/assets/bg-login.jpg"); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   font-family: "Inter", sans-serif;
 }
 
-/* Login Container Styling */
 .login-container {
   background: rgba(255, 255, 255, 0.95);
   padding: 40px 60px;
@@ -27,7 +25,6 @@
   animation: fadeIn 1.2s ease-in-out;
 }
 
-/* Title Styling */
 .login-title {
   font-size: 2.4rem;
   font-weight: 700;
@@ -36,21 +33,18 @@
   letter-spacing: 1px;
 }
 
-/* Subtitle Styling */
 .login-subtitle {
   font-size: 1.2rem;
   margin-bottom: 20px;
   color: #6c757d;
 }
 
-/* Login Buttons Section */
 .login-buttons {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* Google Login Button */
 .google-login {
   display: flex;
   justify-content: center;
@@ -71,13 +65,11 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Google Logo Styling */
 .google-login img {
   width: 20px;
   margin-right: 10px;
 }
 
-/* Animation Keyframes */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -89,7 +81,6 @@
   }
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 480px) {
   .login-container {
     padding: 30px 20px;

@@ -18,7 +18,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await loginUser(formData);
-      console.log("Login successful:", response.data);
+      // console.log("Login successful:", response.data);
       // localStorage.setItem("authToken", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data));
 

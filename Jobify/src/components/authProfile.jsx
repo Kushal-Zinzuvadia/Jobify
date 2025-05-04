@@ -18,7 +18,7 @@ function AuthProfile() {
           if (isAuthenticated && user) {
               try {
                   const token = await getAccessTokenSilently();
-                  console.log("Fetched Token:", token);  // Debugging
+                  console.log("Fetched Token:", token);  
   
                   const response = await fetchUserByEmail(user.email, token);
   
@@ -26,8 +26,8 @@ function AuthProfile() {
                       throw new Error(`HTTP error! Status: ${response.status}`);
                   }
   
-                  const text = await response.text(); // Read response as text first
-                  const data = text ? JSON.parse(text) : {}; // Parse JSON only if text exists
+                  const text = await response.text();
+                  const data = text ? JSON.parse(text) : {}; 
   
                   if (data.role) {
                       setRole(data.role);
@@ -135,7 +135,6 @@ useEffect(() => {
                         <p className="text-lg"></p>
                     )}
                     
-                    {/* Profile Overview */}
                     <div className="flex items-center space-x-6 mb-6">
                         <img src={user.picture} alt="Profile" className="w-20 h-20 rounded-full border-2 border-indigo-500" />
                         <div>
@@ -144,7 +143,6 @@ useEffect(() => {
                         </div>
                     </div>
 
-                    {/* Profile Details */}
                     <div className="space-y-6">
                         <div className="flex items-center">
                             <User className="h-6 w-6 text-indigo-600" />
@@ -160,7 +158,6 @@ useEffect(() => {
                         </div>
                     </div>
 
-                    {/* Job Seeker Applications */}
                     {role === "job_seeker" && (
                         <div className="mt-10">
                             <h3 className="text-2xl font-semibold text-gray-900">My Applications</h3>
@@ -180,7 +177,6 @@ useEffect(() => {
                         </div>
                     )}
 
-                    {/* Employer Job Applicants */}
                     {role === "employer" && (
                         <div className="mt-10">
                             <h3 className="text-2xl font-semibold text-gray-900">Job Applicants</h3>

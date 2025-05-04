@@ -10,14 +10,12 @@ function Jobs() {
   const [jobType, setJobType] = useState("all");
   const [experience, setExperience] = useState("all");
   const [salaryRange, setSalaryRange] = useState("");
-  const [jobListings, setJobListings] = useState([]); // Stores all jobs from API
-  const [filteredJobs, setFilteredJobs] = useState([]); // Stores filtered jobs
+  const [jobListings, setJobListings] = useState([]); 
+  const [filteredJobs, setFilteredJobs] = useState([]); 
 
-  // Fetch jobs once when component mounts
   useEffect(() => {
     const fetchJobs = async () => {
-      console.log("Fetching jobs from API..."); // Debugging
-
+      // console.log("Fetching jobs from API...");
       try {
         const response = await fetchAllJobs(); 
 
@@ -26,10 +24,10 @@ function Jobs() {
         }
 
         const data = await response.json();
-        console.log("Jobs received:", data.jobs); // Debugging
+        // console.log("Jobs received:", data.jobs); 
 
         setJobListings(data.jobs || []);
-        setFilteredJobs(data.jobs || []); // Initially, show all jobs
+        setFilteredJobs(data.jobs || []); 
       } catch (error) {
         console.error("Error fetching jobs:", error);
       }
@@ -48,9 +46,8 @@ function Jobs() {
     );
 
     setFilteredJobs(filtered);
-  }, [searchTerm, location, jobType, experience, salaryRange, jobListings]); // ✅ Runs when any filter changes
+  }, [searchTerm, location, jobType, experience, salaryRange, jobListings]); 
 
-  // Handle Input Changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "searchTerm") setSearchTerm(value);
@@ -70,7 +67,6 @@ function Jobs() {
               Find Your Dream Job
             </h2>
 
-            {/* Search Bar */}
             <div className="flex shadow-md rounded-lg overflow-hidden mb-8 items-center border border-gray-300">
               <Search className="h-5 w-5 text-gray-500 ml-3" />
               <input
@@ -83,8 +79,6 @@ function Jobs() {
               />
             </div>
 
-
-            {/* Filters */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <div className="flex items-center space-x-2 border border-gray-300 p-3 rounded-lg">
                 <MapPin className="h-5 w-5 text-gray-400" />
@@ -142,10 +136,8 @@ function Jobs() {
               </div>
             </div>
 
-            {/* Display Filtered Jobs */}
             <JobList jobListings={filteredJobs} />
 
-            {/* Job Role Recommendations */}
             <div className="mt-12">
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">
                 Recommended Job Roles

@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const BASE_URL = 'https://jobify-backend-production.up.railway.app/api';       
 
-// Axios instance
 const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -11,9 +10,6 @@ const apiClient = axios.create({
   },
 });
 
-// --- API Functions ---
-
-// Fetch user by email
 export const fetchUserByEmail = (email, token) => {
   return fetch(`${BASE_URL}/user/${email}`, {
     method: 'GET',
@@ -24,7 +20,6 @@ export const fetchUserByEmail = (email, token) => {
   });
 };
 
-// Set user role
 export const setUserRole = (email, role, token) => {
   return fetch(`${BASE_URL}/set-role`, {
     method: 'POST',
@@ -36,7 +31,6 @@ export const setUserRole = (email, role, token) => {
   });
 };
 
-// Get applications made by the user
 export const fetchMyApplications = (email, token) => {
   return fetch(`${BASE_URL}/my-applications/${email}`, {
     method: 'GET',
@@ -47,7 +41,6 @@ export const fetchMyApplications = (email, token) => {
   });
 };
 
-// Get applicants for jobs posted by the user
 export const fetchJobApplicants = (email, token) => {
   return fetch(`${BASE_URL}/job-applicants/${email}`, {
     method: 'GET',
@@ -58,12 +51,10 @@ export const fetchJobApplicants = (email, token) => {
   });
 };
 
-// Apply to a job (using axios)
 export const applyToJob = (userId, jobId) => {
   return apiClient.post(`/user/${userId}/apply/${jobId}`);
 };
 
-// Fetch all jobs (simple fetch)
 export const fetchAllJobs = () => {
   return fetch(`${BASE_URL}/jobs`, {
     headers: {
@@ -72,35 +63,40 @@ export const fetchAllJobs = () => {
   });
 };
 
-// Login user (using axios)
 export const loginUser = (formData) => {
   return apiClient.post('/login', formData);
 };
 
-// Fetch jobs posted by a user (using axios)
 export const fetchPostedJobs = (userId) => {
   return apiClient.get(`/jobs/posted/${userId}`);
 };
 
-// Post a new job (using fetch)
 export const postNewJob = (jobData) => {
   return fetch(`${BASE_URL}/jobs`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      // Authorization header can be added here if needed
     },
     body: JSON.stringify(jobData),
   });
 };
 
-// Register new user (using axios)
 export const registerUser = (formData) => {
   return apiClient.post('/register', formData);
 };
 
-// --- Export the client too if needed ---
 export default apiClient;
+
+
+
+
+
+
+
+
+
+
+
 
 
 // import { myAxios } from "../utils/user-service";

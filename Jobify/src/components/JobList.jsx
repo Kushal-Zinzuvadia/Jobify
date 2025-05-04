@@ -50,7 +50,6 @@ const JobList = ({ jobListings }) => {
               key={job.id}
               className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 mb-6 max-w-2xl mx-auto hover:shadow-xl transition"
             >
-              {/* Header - Job Title & Job Type Badge */}
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900">{job.jobTitle}</h3>
@@ -62,7 +61,6 @@ const JobList = ({ jobListings }) => {
                   </p>
                 </div>
 
-                {/* Job Type + Experience + Salary (aligned to the right) */}
                 <div className="text-right">
                   <span className="text-sm bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full capitalize">
                     {job.jobType}
@@ -76,10 +74,8 @@ const JobList = ({ jobListings }) => {
                 </div>
               </div>
 
-              {/* Job Description */}
               <p className="text-gray-700 mt-4 text-sm leading-relaxed">{job.description}</p>
 
-              {/* Requirements */}
               {job.requirements && (
                 <div className="mt-4">
                   <strong className="text-gray-800">Requirements:</strong>
@@ -93,7 +89,6 @@ const JobList = ({ jobListings }) => {
                 </div>
               )}
 
-              {/* Apply Button - Disabled if user has already applied */}
               <button
                 className={`mt-6 w-full py-2.5 rounded-lg font-semibold transition ${
                   hasApplied
