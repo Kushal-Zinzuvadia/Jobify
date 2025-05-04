@@ -35,14 +35,17 @@ const Profile = () => {
 
     const handleApplicantsClick = async (jobId, jobTitle) => {
         try {
-            const data = await fetchApplicants(jobId);
-            setApplicants(data);
-            setSelectedJobTitle(jobTitle);
-            setShowModal(true);
+          const res = await fetchApplicants(jobId);
+          if (!res.ok) throw new Error("Failed to fetch applicants");
+      
+          const data = await res.json();
+          setApplicants(data);
+          setSelectedJobTitle(jobTitle);
+          setShowModal(true);
         } catch (error) {
-            console.error("Failed to fetch applicants:", error);
+          console.error("Failed to fetch applicants:", error);
         }
-    };
+      };      
 
     return (
         <div className="min-h-screen bg-gray-50">
