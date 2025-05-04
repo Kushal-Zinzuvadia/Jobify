@@ -85,6 +85,15 @@ export const registerUser = (formData) => {
   return apiClient.post('/register', formData);
 };
 
+export const fetchApplicants = async (jobId) => {
+  const response = await fetch(`/jobs/${jobId}/applicants`);
+  if (!response.ok) {
+      throw new Error("Failed to fetch applicants");
+  }
+  return response.json();
+};
+
+
 export default apiClient;
 
 
